@@ -1,4 +1,4 @@
-package br.com.kilometercounter.KilometerCounter;
+package br.com.kilometercounter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
