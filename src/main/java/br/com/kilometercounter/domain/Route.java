@@ -2,16 +2,14 @@ package br.com.kilometercounter.domain;
 
 import br.com.kilometercounter.dtos.RouteData;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Table(name ="route")
 @Entity(name = "Route")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")

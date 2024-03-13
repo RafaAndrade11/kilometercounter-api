@@ -2,14 +2,12 @@ package br.com.kilometercounter.domain;
 
 import br.com.kilometercounter.dtos.ClientData;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name ="client")
 @Entity(name = "Client")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
