@@ -1,6 +1,7 @@
 package br.com.kilometercounter.domain;
 
 import br.com.kilometercounter.dtos.RouteDataCreate;
+import br.com.kilometercounter.dtos.RouteDataUpdate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +28,7 @@ public class Route {
     @JoinColumn(name = "destination_client_id")
     private Client destinationClient;
 
-    private double distance;
+    private Double distance;
     private LocalDate routeDate;
 
     public Route(RouteDataCreate data) {
@@ -35,5 +36,17 @@ public class Route {
         this.destinationClient = data.destinationClient();
         this.distance = data.distance();
         this.routeDate = data.routeDate();
+    }
+
+    public void updateRouteInfo(RouteDataUpdate data) {
+        if(data.destinationClient() != null) {
+            this.destinationClient = data.destinationClient();
+        }
+        if(data.originClient() != null) {
+            this.originClient = data.originClient();
+        }
+        if(data.distance() != null) {
+            this.distance = data.distance();
+        }
     }
 }
