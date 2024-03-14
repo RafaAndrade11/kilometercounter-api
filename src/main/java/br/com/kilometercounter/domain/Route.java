@@ -1,6 +1,6 @@
 package br.com.kilometercounter.domain;
 
-import br.com.kilometercounter.dtos.RouteData;
+import br.com.kilometercounter.dtos.RouteDataCreate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +30,7 @@ public class Route {
     private double distance;
     private LocalDate routeDate;
 
-    public Route(RouteData data) {
+    public Route(RouteDataCreate data) {
         this.originClient = data.originClient();
         this.destinationClient = data.destinationClient();
         this.distance = data.distance();

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-public record RouteData(
+public record RouteDataCreate(
         @NotBlank
         Client originClient,
         @NotBlank

@@ -1,17 +1,17 @@
 package br.com.kilometercounter.controller;
 
 import br.com.kilometercounter.domain.Route;
-import br.com.kilometercounter.dtos.RouteData;
+import br.com.kilometercounter.dtos.RouteDataCreate;
 import br.com.kilometercounter.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/route")
 public class RouteController {
 
@@ -20,7 +20,7 @@ public class RouteController {
 
     @PostMapping
     @Transactional
-    public void createRoute (@RequestBody @Valid RouteData data) {
+    public void createRoute (@RequestBody @Valid RouteDataCreate data) {
         routeRepository.save(new Route(data));
     }
 }
