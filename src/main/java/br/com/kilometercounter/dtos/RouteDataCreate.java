@@ -11,7 +11,7 @@ public record RouteDataCreate(
         @NotBlank
         Client destinationClient,
         @NotBlank
-        double distance,
+        Double distance,
         @NotBlank
         LocalDate routeDate
 ) {

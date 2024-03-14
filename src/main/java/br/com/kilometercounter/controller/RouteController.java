@@ -3,6 +3,7 @@ package br.com.kilometercounter.controller;
 import br.com.kilometercounter.domain.Route;
 import br.com.kilometercounter.dtos.RouteDataCreate;
 import br.com.kilometercounter.dtos.RouteDataList;
+import br.com.kilometercounter.dtos.RouteDataUpdate;
 import br.com.kilometercounter.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -33,7 +34,12 @@ public class RouteController {
                 .collect(Collectors.toList());
     }
 
-
+    @PutMapping
+    @Transactional
+    public void updateRoute (@RequestBody @Valid RouteDataUpdate data) {
+        var route = routeRepository.getReferenceById(data.id());
+        route.updateRouteInfo(data);
+    }
 
     @DeleteMapping("/{id}")
     @Transactional
