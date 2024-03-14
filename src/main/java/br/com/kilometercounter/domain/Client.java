@@ -1,5 +1,6 @@
 package br.com.kilometercounter.domain;
 
+import br.com.kilometercounter.dtos.ClientDataUpdate;
 import br.com.kilometercounter.dtos.ClientDataCreate;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,5 +25,15 @@ public class Client {
     public Client(ClientDataCreate data) {
         this.name = data.name();
         this.address = data.address();
+    }
+
+
+    public void updateInfo(ClientDataUpdate data) {
+        if (data.name() != null) {
+            this.name = data.name();
+        }
+        if (data.address() != null) {
+            this.address = data.address();
+        }
     }
 }
