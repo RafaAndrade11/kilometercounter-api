@@ -1,17 +1,18 @@
 package br.com.kilometercounter.controller;
 
 import br.com.kilometercounter.domain.Client;
-import br.com.kilometercounter.dtos.ClientData;
+import br.com.kilometercounter.dtos.ClientDataCreate;
+import br.com.kilometercounter.dtos.ClientDataList;
 import br.com.kilometercounter.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
 @RequestMapping("/client")
 public class ClientController {
 
@@ -20,7 +21,16 @@ public class ClientController {
 
     @PostMapping
     @Transactional
-    public void createClient (@RequestBody @Valid ClientData data) {
+    public void createClient (@RequestBody @Valid ClientDataCreate data) {
         clientRepository.save(new Client(data));
     }
+
+    @GetMapping
+    public List<ClientDataList> findAllClients() {
+        List<Client> clients = clientRepository.findAllById(List.of());
+        return clients.stream()
+                .map(ClientDataList::new)
+                .collect(Collectors.toList());
+    }
 }
+
