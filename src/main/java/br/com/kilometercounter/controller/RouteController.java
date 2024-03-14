@@ -6,10 +6,7 @@ import br.com.kilometercounter.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/route")
@@ -22,5 +19,11 @@ public class RouteController {
     @Transactional
     public void createRoute (@RequestBody @Valid RouteDataCreate data) {
         routeRepository.save(new Route(data));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteRoute (@PathVariable Long id) {
+        routeRepository.deleteById(id);
     }
 }
