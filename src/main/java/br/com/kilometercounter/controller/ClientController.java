@@ -40,5 +40,12 @@ public class ClientController {
         var client = clientRepository.getReferenceById(data.id());
         client.updateInfo(data);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteClient(@PathVariable Long id) {
+        clientRepository.deleteById(id);
+
+    }
 }
 
