@@ -1,7 +1,7 @@
 package br.com.kilometercounter.domain;
 
-import br.com.kilometercounter.dtos.RouteDataCreate;
-import br.com.kilometercounter.dtos.RouteDataUpdate;
+import br.com.kilometercounter.dtos.route.RouteDataCreate;
+import br.com.kilometercounter.dtos.route.RouteDataUpdate;
 import jakarta.persistence.*;
 import lombok.*;
 
