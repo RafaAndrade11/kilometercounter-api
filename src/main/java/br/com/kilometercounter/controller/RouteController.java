@@ -1,9 +1,9 @@
 package br.com.kilometercounter.controller;
 
 import br.com.kilometercounter.domain.Route;
-import br.com.kilometercounter.dtos.RouteDataCreate;
-import br.com.kilometercounter.dtos.RouteDataList;
-import br.com.kilometercounter.dtos.RouteDataUpdate;
+import br.com.kilometercounter.dtos.route.RouteDataCreate;
+import br.com.kilometercounter.dtos.route.RouteDataList;
+import br.com.kilometercounter.dtos.route.RouteDataUpdate;
 import br.com.kilometercounter.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

@@ -1,15 +1,19 @@
 package br.com.kilometercounter.controller;
 
 import br.com.kilometercounter.domain.Client;
-import br.com.kilometercounter.dtos.ClientDataUpdate;
-import br.com.kilometercounter.dtos.ClientDataCreate;
-import br.com.kilometercounter.dtos.ClientDataList;
+import br.com.kilometercounter.dtos.client.ClientDataUpdate;
+import br.com.kilometercounter.dtos.client.ClientDataCreate;
+import br.com.kilometercounter.dtos.client.ClientDataList;
 import br.com.kilometercounter.repository.ClientRepository;
+import br.com.kilometercounter.service.MapService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,34 +22,48 @@ import java.util.stream.Collectors;
 public class ClientController {
 
     @Autowired
+    private MapService mapService;
+
+    @Autowired
     private ClientRepository clientRepository;
 
     @PostMapping
     @Transactional
-    public void createClient (@RequestBody @Valid ClientDataCreate data) {
+    public ResponseEntity createClient (@RequestBody @Valid ClientDataCreate data) {
         clientRepository.save(new Client(data));
+
+        return ResponseEntity.ok("Success");
     }
 
     @GetMapping
-    public List<ClientDataList> findAllClients() {
-        List<Client> clients = clientRepository.findAllById(List.of());
-        return clients.stream()
-                .map(ClientDataList::new)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> findAllClients() {
+        List<Client> getClients = clientRepository.findAll();
+
+        return new ResponseEntity(getClients, HttpStatus.OK);
+
     }
 
     @PutMapping
     @Transactional
-    public void updateClient (@RequestBody @Valid ClientDataUpdate data) {
+    public ResponseEntity updateClient (@RequestBody @Valid ClientDataUpdate data) {
         var client = clientRepository.getReferenceById(data.id());
         client.updateInfo(data);
+
+        return ResponseEntity.ok("Success");
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deleteClient(@PathVariable Long id) {
+    public ResponseEntity deleteClient(@PathVariable Long id) {
         clientRepository.deleteById(id);
 
+        return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{address}")
+    public String geocodeAddress(@PathVariable String address) {
+        return mapService.geocodeAddress(address);
+    }
+
 }
 
