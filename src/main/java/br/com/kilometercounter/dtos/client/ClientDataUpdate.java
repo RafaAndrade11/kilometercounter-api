@@ -1,4 +1,4 @@
-package br.com.kilometercounter.dtos;
+package br.com.kilometercounter.dtos.client;
 
 import jakarta.validation.constraints.NotNull;
 

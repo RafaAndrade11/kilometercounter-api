@@ -1,4 +1,4 @@
-package br.com.kilometercounter.dtos;
+package br.com.kilometercounter.dtos.route;
 
 import br.com.kilometercounter.domain.Client;
 import br.com.kilometercounter.domain.Route;
