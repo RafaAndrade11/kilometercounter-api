@@ -19,12 +19,12 @@ public class Client {
     private Long id;
 
     private String name;
-    private String address;
+    private Long cep;
 
 
     public Client(ClientDataCreate data) {
         this.name = data.name();
-        this.address = data.address();
+        this.cep = data.cep();
     }
 
 
@@ -32,8 +32,8 @@ public class Client {
         if (data.name() != null) {
             this.name = data.name();
         }
-        if (data.address() != null) {
-            this.address = data.address();
+        if (data.cep() != null) {
+            this.cep = data.cep();
         }
     }
 }
