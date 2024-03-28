@@ -8,6 +8,8 @@ import br.com.kilometercounter.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,28 +24,38 @@ public class RouteController {
 
     @PostMapping
     @Transactional
-    public void createRoute (@RequestBody @Valid RouteDataCreate data) {
+    public ResponseEntity createRoute(@RequestBody @Valid RouteDataCreate data) {
+
         routeRepository.save(new Route(data));
+
+        return ResponseEntity.ok("Success");
     }
 
     @GetMapping
-    public List<RouteDataList> findAllRoutes(){
-        List<Route> routes = routeRepository.findAllById(List.of());
-        return routes.stream()
-                .map(RouteDataList::new)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> findAllRoutes() {
+
+        List<Route> getRoutes = routeRepository.findAll();
+
+        return new ResponseEntity(getRoutes, HttpStatus.OK);
+
     }
 
     @PutMapping
     @Transactional
-    public void updateRoute (@RequestBody @Valid RouteDataUpdate data) {
+    public ResponseEntity updateRoute(@RequestBody @Valid RouteDataUpdate data) {
+
         var route = routeRepository.getReferenceById(data.id());
         route.updateRouteInfo(data);
+
+        return ResponseEntity.ok("Success");
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deleteRoute (@PathVariable Long id) {
+    public ResponseEntity deleteRoute(@PathVariable Long id) {
+
         routeRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
