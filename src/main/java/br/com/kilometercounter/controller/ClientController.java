@@ -1,11 +1,10 @@
 package br.com.kilometercounter.controller;
 
+import br.com.kilometercounter.service.getDistance;
 import br.com.kilometercounter.domain.Client;
-import br.com.kilometercounter.dtos.client.ClientDataUpdate;
 import br.com.kilometercounter.dtos.client.ClientDataCreate;
-import br.com.kilometercounter.dtos.client.ClientDataList;
+import br.com.kilometercounter.dtos.client.ClientDataUpdate;
 import br.com.kilometercounter.repository.ClientRepository;
-import br.com.kilometercounter.service.MapService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/client")
 public class ClientController {
-
-    @Autowired
-    private MapService mapService;
-
     @Autowired
     private ClientRepository clientRepository;
 
@@ -60,9 +54,16 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{address}")
-    public String geocodeAddress(@PathVariable String address) {
-        return mapService.geocodeAddress(address);
+    //get para calculo da distancia
+    @GetMapping("/distance/{sourceCEP}/{destinationCEP}")
+    public ResponseEntity<String> calculateDistance(@PathVariable String sourceCEP, @PathVariable String destinationCEP) {
+        try {
+            getDistance.getData(sourceCEP, destinationCEP);
+            return ResponseEntity.ok("Distance calculated successfully");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to calculate distance");
+        }
     }
 
 }
