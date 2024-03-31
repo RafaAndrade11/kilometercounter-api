@@ -1,10 +1,14 @@
 package br.com.kilometercounter.controller;
 
+import br.com.kilometercounter.domain.Client;
 import br.com.kilometercounter.domain.Route;
 import br.com.kilometercounter.dtos.route.RouteDataCreate;
 import br.com.kilometercounter.dtos.route.RouteDataList;
 import br.com.kilometercounter.dtos.route.RouteDataUpdate;
+import br.com.kilometercounter.repository.ClientRepository;
 import br.com.kilometercounter.repository.RouteRepository;
+import br.com.kilometercounter.service.getDistance;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +26,33 @@ public class RouteController {
     @Autowired
     RouteRepository routeRepository;
 
+    @Autowired
+    ClientRepository clientRepository;
+
     @PostMapping
     @Transactional
     public ResponseEntity createRoute(@RequestBody @Valid RouteDataCreate data) {
+        try {
+            System.out.println("Erro ao buscar cliente");
+            Client originClient = clientRepository.findById(data.originClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Cliente de origem não encontrado"));
+            Client destinationClient = clientRepository.findById(data.destinationClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Cliente de destino não encontrado"));
 
-        routeRepository.save(new Route(data));
+            double distance = getDistance.getData(originClient.getCep(), destinationClient.getCep());
 
-        return ResponseEntity.ok("Success");
+            Route route = new Route(originClient, destinationClient, distance);
+            routeRepository.save(route);
+            return ResponseEntity.ok("Rota criada com sucesso");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("erro aqui");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar a rota");
+        }
     }
+
+
 
     @GetMapping
     public ResponseEntity<?> findAllRoutes() {

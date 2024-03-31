@@ -2,9 +2,11 @@ package br.com.kilometercounter.domain;
 
 import br.com.kilometercounter.dtos.route.RouteDataCreate;
 import br.com.kilometercounter.dtos.route.RouteDataUpdate;
+import br.com.kilometercounter.service.getDistance;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Table(name ="route")
@@ -36,6 +38,20 @@ public class Route {
         this.destinationClient = data.destinationClient();
         this.distance = data.distance();
         this.routeDate = data.routeDate();
+    }
+
+    public Route(Client originClient, Client destinationClient, double distance) {
+        this.originClient = originClient;
+        this.destinationClient = destinationClient;
+        try {
+            Long originAddress = originClient.getCep();
+            Long destinationAddress = destinationClient.getCep();
+            this.distance = getDistance.getData(originAddress, destinationAddress);
+        } catch (IOException | InterruptedException e) {
+            // Trate a exceção adequadamente, se necessário
+            e.printStackTrace();
+            this.distance = 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
     }
 
     public void updateRouteInfo(RouteDataUpdate data) {
