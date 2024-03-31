@@ -3,7 +3,6 @@ package br.com.kilometercounter.controller;
 import br.com.kilometercounter.domain.Client;
 import br.com.kilometercounter.domain.Route;
 import br.com.kilometercounter.dtos.route.RouteDataCreate;
-import br.com.kilometercounter.dtos.route.RouteDataList;
 import br.com.kilometercounter.dtos.route.RouteDataUpdate;
 import br.com.kilometercounter.repository.ClientRepository;
 import br.com.kilometercounter.repository.RouteRepository;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/route")
@@ -33,21 +31,33 @@ public class RouteController {
     @Transactional
     public ResponseEntity createRoute(@RequestBody @Valid RouteDataCreate data) {
         try {
-            System.out.println("Erro ao buscar cliente");
+            System.out.println("Iniciando criação de rota");
+            System.out.println("ID do cliente de origem: " + data.originClient().getId());
+            System.out.println("ID do cliente de destino: " + data.destinationClient().getId());
+
             Client originClient = clientRepository.findById(data.originClient().getId())
                     .orElseThrow(() -> new EntityNotFoundException("Cliente de origem não encontrado"));
             Client destinationClient = clientRepository.findById(data.destinationClient().getId())
                     .orElseThrow(() -> new EntityNotFoundException("Cliente de destino não encontrado"));
 
-            double distance = getDistance.getData(originClient.getCep(), destinationClient.getCep());
+            System.out.println("Clientes encontrados: " + originClient.getName() + ", " + destinationClient.getName());
+
+            double distance = getDistance.getData(originClient.getCep(), destinationClient.getCep());;
+
+            System.out.println("Distância calculada: " + distance);
 
             Route route = new Route(originClient, destinationClient, distance);
             routeRepository.save(route);
+
+            System.out.println("Rota criada com sucesso");
+
             return ResponseEntity.ok("Rota criada com sucesso");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
         } catch (Exception e) {
-            System.out.println("erro aqui");
+            System.out.println("Erro ao calcular a distância: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar a rota");
         }
     }

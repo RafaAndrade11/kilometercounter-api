@@ -1,5 +1,6 @@
 package br.com.kilometercounter.service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,14 +22,45 @@ public class getDistance {
 
         JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
 
-        // parsing distance and convert String to Double
-        String distanceString = jsonObject.getAsJsonArray("rows")
-                .get(0).getAsJsonObject()
-                .getAsJsonArray("elements")
-                .get(0).getAsJsonObject()
-                .getAsJsonObject("distance")
-                .get("text").getAsString();
+        if (!jsonObject.has("rows")) {
+            System.out.println("Chave 'rows' não encontrada no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
 
+        JsonArray rowsArray = jsonObject.getAsJsonArray("rows");
+        if (rowsArray.size() == 0) {
+            System.out.println("Array 'rows' vazio no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
+
+        JsonObject firstRow = rowsArray.get(0).getAsJsonObject();
+        // Verificar se a chave "elements" existe no JSON
+        if (!firstRow.has("elements")) {
+            System.out.println("Chave 'elements' não encontrada no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
+
+        JsonArray elementsArray = firstRow.getAsJsonArray("elements");
+        if (elementsArray.size() == 0) {
+            System.out.println("Array 'elements' vazio no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
+
+        JsonObject firstElement = elementsArray.get(0).getAsJsonObject();
+        // Verificar se a chave "distance" existe no JSON
+        if (!firstElement.has("distance")) {
+            System.out.println("Chave 'distance' não encontrada no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
+
+        JsonObject distanceObject = firstElement.getAsJsonObject("distance");
+        // Verificar se a chave "text" existe no JSON
+        if (!distanceObject.has("text")) {
+            System.out.println("Chave 'text' não encontrada no JSON");
+            return 0.0; // Ou outro valor padrão, dependendo do seu caso
+        }
+
+        String distanceString = distanceObject.get("text").getAsString();
         distanceString = distanceString.replace(" km", "");
 
         System.out.println(distanceString);
