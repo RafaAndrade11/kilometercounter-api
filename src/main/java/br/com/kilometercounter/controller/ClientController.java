@@ -56,7 +56,7 @@ public class ClientController {
 
     //get para calculo da distancia
     @GetMapping("/distance/{sourceCEP}/{destinationCEP}")
-    public ResponseEntity<String> calculateDistance(@PathVariable String sourceCEP, @PathVariable String destinationCEP) {
+    public ResponseEntity<String> calculateDistance(@PathVariable Long sourceCEP, @PathVariable Long destinationCEP) {
         try {
             getDistance.getData(sourceCEP, destinationCEP);
             return ResponseEntity.ok("Distance calculated successfully");
