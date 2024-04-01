@@ -14,7 +14,7 @@ public class getDistance {
 
     private static final String API_KEY = "AIzaSyAwvE64TUa4HxK7B1mOeyKZtOB4cr6uiJw";
 
-    public static double getData(Long source, Long destination) throws IOException, InterruptedException {
+    public static double getData(String source, String destination) throws IOException, InterruptedException {
         var url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + source + "&destinations=" + destination + "&key=" + API_KEY;
         var request = HttpRequest.newBuilder().GET().uri(URI.create(url)).build();
         var client = HttpClient.newBuilder().build();

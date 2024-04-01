@@ -43,16 +43,9 @@ public class Route {
     public Route(Client originClient, Client destinationClient, double distance) {
         this.originClient = originClient;
         this.destinationClient = destinationClient;
-        try {
-            Long originAddress = originClient.getCep();
-            Long destinationAddress = destinationClient.getCep();
-            this.distance = getDistance.getData(originAddress, destinationAddress);
-        } catch (IOException | InterruptedException e) {
-            // Trate a exceção adequadamente, se necessário
-            e.printStackTrace();
-            this.distance = 0.0; // Ou outro valor padrão, dependendo do seu caso
-        }
+        this.distance = distance;
     }
+
 
     public void updateRouteInfo(RouteDataUpdate data) {
         if(data.destinationClient() != null) {

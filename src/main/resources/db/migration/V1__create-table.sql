@@ -2,7 +2,7 @@ create table client(
 
 	id bigint not null auto_increment,
 	name varchar(100) not null,
-	cep bigint(8) not null,
+	cep varchar(8) not null,
 
 	primary key(id)
 );

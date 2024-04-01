@@ -19,7 +19,7 @@ public class Client {
     private Long id;
 
     private String name;
-    private Long cep;
+    private String cep;
 
 
     public Client(ClientDataCreate data) {

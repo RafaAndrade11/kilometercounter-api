@@ -42,7 +42,11 @@ public class RouteController {
 
             System.out.println("Clientes encontrados: " + originClient.getName() + ", " + destinationClient.getName());
 
-            double distance = getDistance.getData(originClient.getCep(), destinationClient.getCep());;
+            double distance = getDistance.getData(originClient.getCep(), destinationClient.getCep());
+
+
+            System.out.println("CEP DO ORIGIN CLIENT: " + originClient.getCep());
+            System.out.println("CEP DO DESTINATION CLIENT: " + destinationClient.getCep());
 
             System.out.println("Distância calculada: " + distance);
 
@@ -53,6 +57,7 @@ public class RouteController {
 
             return ResponseEntity.ok("Rota criada com sucesso");
         } catch (EntityNotFoundException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 
         } catch (Exception e) {
