@@ -26,7 +26,7 @@ public class ClientController {
     public ResponseEntity createClient (@RequestBody @Valid ClientDataCreate data) {
         clientRepository.save(new Client(data));
 
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Success") ;
     }
 
     @GetMapping
@@ -54,7 +54,7 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-    //get para calculo da distancia
+    //teste de calculo da distancia não será utilizado no programa
     @GetMapping("/distance/{sourceCEP}/{destinationCEP}")
     public ResponseEntity<String> calculateDistance(@PathVariable String sourceCEP, @PathVariable String destinationCEP) {
         try {
