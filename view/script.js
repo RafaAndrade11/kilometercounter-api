@@ -1,41 +1,36 @@
 const url = "http://localhost:8080/client";
 
-function hideLoader() {
-    document.getElementById("loading").style.display = "none";
-}
-
-function show(clients) {
-    let tab = `<thead>
-              <th scope="col">#<th>
-              <th scope="col">Description<th>
-              <th scope="col">Username<th>
-              <th scope="col">User Id<th>
-                </thead>`;
-
-    for (let client of clients) {
-        tab+= `
-            <tr>
-            <td scope="row">${client.client.id}</td>
-            <td>${client.client.name}</td>
-            <td>${client.client.cep}</td>
-            </tr>
-        `;
+async function fetchClients() {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Erro ao obter os clientes");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Erro:", error);
+        return [];
     }
-
-    document.getElementById("clients").innerHTML = tab;
-
 }
 
-async function getClients(url) {
-       const response = await fetch(url, {method: "GET"})
+function renderClients(clients) {
+    const clientsContainer = document.getElementById("clients");
+    clientsContainer.innerHTML = ""; // Limpa o conteúdo anterior
+    clients.forEach(client => {
+        const clientRow = document.createElement("tr");
+        clientRow.innerHTML = `
+            <td>${client.id}</td>
+            <td>${client.name}</td>
+            <td>${client.cep}</td>
+        `;
+        clientsContainer.appendChild(clientRow);
+    });
+}
 
-       var data = await response.json();
-       console.log(data);
-       if (response)
-            hideLoader();
-           show(data.clients);
+async function init() {
+    const clients = await fetchClients();
+    renderClients(clients);
+}
 
-
- }
-
- getClients(url);
+init();
