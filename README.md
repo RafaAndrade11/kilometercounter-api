@@ -14,3 +14,5 @@ KILOMETER COUNTER é um sistema web desenvolvido em Java usando Spring Boot, Mav
 - Spring Boot
 - Maven
 - Spring Data JPA
+- HTML
+- JavaScript
